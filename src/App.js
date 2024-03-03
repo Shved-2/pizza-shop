@@ -19,7 +19,7 @@ function App() {
             {pizzas.map((item, ind) => (
               <PizzaBlock
                 {...item}
-                // key={ind}
+                key={ind}
                 // id={item.id}
                 // imageUrl={item.imageUrl}
                 // title={item.title}
