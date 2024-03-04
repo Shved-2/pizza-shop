@@ -4,7 +4,7 @@ function ErrorBlock() {
     <div className={style.root}>
       <div>
         <h1 className={style.strong}>
-          <icon>😕</icon>
+          <span>😕</span>
           <br />
           Страница не найдена
         </h1>

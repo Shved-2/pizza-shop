@@ -26,7 +26,8 @@ body {
   padding: 40px 0;
 
   &__title {
-    margin: 35px 0;
+    margin: 60px 0 50px;
+    font-size: 38px;
   }
 
   &__items {
@@ -47,7 +48,7 @@ body {
       // flex-direction: column-reverse;
       .categories{
         width: 100%;
-        overflow: scroll;
+        overflow: auto;
 
         ul{
           width: 750px;
@@ -149,7 +150,9 @@ body {
       }
     }
   }
-
+    .content__items{
+      display: block;
+    }
   &__item {
     display: flex;
     width: 100%;
