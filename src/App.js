@@ -6,20 +6,24 @@ import Error404 from './pages/Error404';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import { useState } from 'react';
+import { createContext } from 'react';
+export const SearchContext = createContext();
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
 
   return (
     <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<Home searchValue={searchValue} />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="*" element={<Error404 />} />
-        </Routes>
-      </div>
+      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<Error404 />} />
+          </Routes>
+        </div>
+      </SearchContext.Provider>
     </div>
   );
 }

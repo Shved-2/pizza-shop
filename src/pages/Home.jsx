@@ -4,8 +4,11 @@ import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
 import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
+import { useContext } from 'react';
+import { SearchContext } from '../App';
 
-function Home({ searchValue }) {
+function Home() {
+  const { searchValue } = useContext(SearchContext);
   const [categoryId, setCategoryId] = useState(0);
   const [sortType, setSortType] = useState({ name: 'популярности', sortProperty: 'rating' });
 
@@ -26,13 +29,11 @@ function Home({ searchValue }) {
   useEffect(() => {
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
-    const category = categoryId > 0 ? `category=${categoryId}` : '';
+    const category = categoryId > 0 ? `&category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
     setIsLoading(true);
-    fetch(
-      `${url}?page=${currentPage}&limit=4${category}${category}&sortBy=${sortBy}&order=${order}${search}`,
-    )
+    fetch(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
       .then((response) => {
         return response.json();
       })
