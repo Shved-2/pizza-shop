@@ -6,11 +6,15 @@ import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import { useContext } from 'react';
 import { SearchContext } from '../App';
+import { useSelector } from 'react-redux';
+import { selectCategory, selectSort } from '../redux/slices/filterSlice';
 
 function Home() {
   const { searchValue } = useContext(SearchContext);
-  const [categoryId, setCategoryId] = useState(0);
-  const [sortType, setSortType] = useState({ name: 'популярности', sortProperty: 'rating' });
+  // const [categoryId, setCategoryId] = useState(0);
+  const categoryId = useSelector(selectCategory);
+  const sortType = useSelector(selectSort);
+  // const [sortType, setSortType] = useState({ name: 'популярности', sortProperty: 'rating' });
 
   const [pizzaJson, setPizzaJson] = useState([]); //все пиццы с бэкенда
   const [isLoading, setIsLoading] = useState(true);
@@ -48,8 +52,14 @@ function Home() {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onClickCategory={(i) => setCategoryId(i)} />
-        <Sort value={sortType} onClickSort={(i) => setSortType(i)} />
+        <Categories
+        // value={categoryId}
+        //  onClickCategory={(i) => setCategoryId(i)}
+        />
+        <Sort
+        //  value={sortType}
+        // onClickSort={(i) => setSortType(i)}
+        />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
