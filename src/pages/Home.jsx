@@ -1,21 +1,34 @@
+import qs from 'qs';
+
 import Categories from '../components/Categories';
-import Sort from '../components/Sort';
+import Sort, { list } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Pagination from '../components/Pagination';
 import { useContext } from 'react';
 import { SearchContext } from '../App';
-import { useSelector } from 'react-redux';
-import { selectCategory, selectPageCount, selectSort } from '../redux/slices/filterSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCategory,
+  selectPageCount,
+  selectSort,
+  setFilters,
+} from '../redux/slices/filterSlice';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
+
   const { searchValue } = useContext(SearchContext);
   // const [categoryId, setCategoryId] = useState(0);
   const categoryId = useSelector(selectCategory);
-  const sortType = useSelector(selectSort);
-  // const [sortType, setSortType] = useState({ name: 'популярности', sortProperty: 'rating' });
+  const sort = useSelector(selectSort);
+  // const [sort, setSort] = useState({ name: 'популярности', sortProperty: 'rating' });
 
   const [pizzaJson, setPizzaJson] = useState([]); //все пиццы с бэкенда
   const [isLoading, setIsLoading] = useState(true);
@@ -31,17 +44,57 @@ function Home() {
     .map((item, ind) => <PizzaBlock {...item} key={ind} />);
   const skeleton = [...new Array(4)].map((_, index) => <Sceleton key={index} />);
   const url = 'https://62eaca76ad29546325946cf8.mockapi.io/items';
-
-  useEffect(() => {
+  const fetchPizza = () => {
+    setIsLoading(true);
     const category = categoryId > 0 ? `&category=${categoryId}` : '';
-    const sortBy = sortType.sortProperty.replace('-', '');
-    const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+    const sortBy = sort.sortProperty.replace('-', '');
+    const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
+    axios
+      .get(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
+      .then((response) => {
+        setPizzaJson(response.data);
+        setIsLoading(false);
+      });
+  };
+  //отвечает за парсинг тех параметроав что фильтруем и вшиваем их в адресную строку
+  //при первом рендеринге
+  useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortProperty: sort.sortProperty,
+        categoryId,
+        currentPage,
+      });
+
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
+  }, [categoryId, sort, searchValue, currentPage]);
+
+  //проверяем , есть ли в url параметры, сли был первый рендер
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      console.log({ list });
+      const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
+      console.log(sort);
+      dispatch(
+        setFilters({
+          ...params,
+          sort,
+        }),
+      );
+      isSearch.current = true;
+    }
+  }, []);
+
+  //если был певый рендер, то запрвашиваем  рендер пиццы
+  useEffect(() => {
     // console.log(
     //   `${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`,
     // );
-    setIsLoading(true);
 
     // fetch(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
     //   .then((response) => {
@@ -52,33 +105,22 @@ function Home() {
     //     setPizzaJson(data);
     //     setIsLoading(false);
     //   });
+    if (!isSearch.current) {
+      fetchPizza();
+    }
+    isSearch.current = false;
+    window.scrollTo(0, 0);
+  }, [categoryId, sort, searchValue, currentPage]);
 
-    axios
-      .get(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
-      .then((response) => {
-        setPizzaJson(response.data);
-        setIsLoading(false);
-      });
-
-    window.scroll(0, 0);
-  }, [categoryId, sortType, searchValue, currentPage]);
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-        // value={categoryId}
-        //  onClickCategory={(i) => setCategoryId(i)}
-        />
-        <Sort
-        //  value={sortType}
-        // onClickSort={(i) => setSortType(i)}
-        />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
-      <Pagination
-      // onCangePage={(num) => setCurrentPage(num)}
-      />
+      <Pagination />
     </div>
   );
 }
