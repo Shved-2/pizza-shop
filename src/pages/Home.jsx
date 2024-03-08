@@ -7,7 +7,8 @@ import Pagination from '../components/Pagination';
 import { useContext } from 'react';
 import { SearchContext } from '../App';
 import { useSelector } from 'react-redux';
-import { selectCategory, selectSort } from '../redux/slices/filterSlice';
+import { selectCategory, selectPageCount, selectSort } from '../redux/slices/filterSlice';
+import axios from 'axios';
 
 function Home() {
   const { searchValue } = useContext(SearchContext);
@@ -18,7 +19,8 @@ function Home() {
 
   const [pizzaJson, setPizzaJson] = useState([]); //все пиццы с бэкенда
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); //номер вызываемой страницы
+  // const [currentPage, setCurrentPage] = useState(1); //номер вызываемой страницы
+  const currentPage = useSelector(selectPageCount);
   const pizzas = pizzaJson
     // .filter((obj) => {
     //   if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
@@ -31,19 +33,30 @@ function Home() {
   const url = 'https://62eaca76ad29546325946cf8.mockapi.io/items';
 
   useEffect(() => {
+    const category = categoryId > 0 ? `&category=${categoryId}` : '';
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
-    const category = categoryId > 0 ? `&category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
+    // console.log(
+    //   `${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`,
+    // );
     setIsLoading(true);
-    fetch(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
+
+    // fetch(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     // console.log(data);
+    //     setPizzaJson(data);
+    //     setIsLoading(false);
+    //   });
+
+    axios
+      .get(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
       .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // console.log(data);
-        setPizzaJson(data);
+        setPizzaJson(response.data);
         setIsLoading(false);
       });
 
@@ -63,7 +76,9 @@ function Home() {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
-      <Pagination onCangePage={(num) => setCurrentPage(num)} />
+      <Pagination
+      // onCangePage={(num) => setCurrentPage(num)}
+      />
     </div>
   );
 }
