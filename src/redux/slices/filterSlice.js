@@ -21,9 +21,9 @@ export const filterSlice = createSlice({
       state.pageCount = Number(action.payload.currentPage);
       state.sort = action.payload.sort;
       state.categoryId = Number(action.payload.categoryId);
-      console.log(state.pageCount);
-      console.log(state.sort);
-      console.log(state.categoryId);
+      // console.log(state.pageCount);
+      // console.log(state.sort);
+      // console.log(state.categoryId);
     },
   },
 });

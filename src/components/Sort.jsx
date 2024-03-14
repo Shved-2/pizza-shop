@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSort, setSortType } from '../redux/slices/filterSlice';
+import { useEffect } from 'react';
 
 export const list = [
   { name: 'популярности(DESC)', sortProperty: 'rating' },
@@ -14,6 +15,7 @@ function Sort() {
   const [open, setOpen] = useState(false);
   const value = useSelector(selectSort);
   const dispatch = useDispatch();
+  const sortRef = useRef();
 
   // const sortName = list[value].name;
   const popupCVlose = (i) => {
@@ -21,8 +23,18 @@ function Sort() {
     setOpen(false);
   };
 
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!e.composedPath().includes(sortRef.current)) {
+        setOpen(false);
+      }
+    };
+
+    document.body.addEventListener('click', handleClick);
+    return () => document.body.removeEventListener('click', handleClick);
+  }, []);
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"

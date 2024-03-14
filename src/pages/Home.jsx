@@ -57,6 +57,7 @@ function Home() {
         setPizzaJson(response.data);
         setIsLoading(false);
       });
+    setIsLoading(false);
   };
   //отвечает за парсинг тех параметроав что фильтруем и вшиваем их в адресную строку
   //при первом рендеринге
@@ -77,9 +78,9 @@ function Home() {
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-      console.log({ list });
+
       const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
-      console.log(sort);
+
       dispatch(
         setFilters({
           ...params,
