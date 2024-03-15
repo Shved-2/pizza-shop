@@ -15,8 +15,9 @@ import {
   selectSort,
   setFilters,
 } from '../redux/slices/filterSlice';
-import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
+import { selectPizza, fetchPizzas, selectStatus } from '../redux/slices/pizzaSlice';
 
 function Home() {
   const dispatch = useDispatch();
@@ -30,8 +31,10 @@ function Home() {
   const sort = useSelector(selectSort);
   // const [sort, setSort] = useState({ name: 'популярности', sortProperty: 'rating' });
 
-  const [pizzaJson, setPizzaJson] = useState([]); //все пиццы с бэкенда
-  const [isLoading, setIsLoading] = useState(true);
+  // const [pizzaJson, setPizzaJson] = useState([]); //все пиццы с бэкенда
+  const pizzaJson = useSelector(selectPizza); //все пиццы с бэкенда
+  // const [isLoading, setIsLoading] = useState(true);
+  const isLoading = useSelector(selectStatus);
   // const [currentPage, setCurrentPage] = useState(1); //номер вызываемой страницы
   const currentPage = useSelector(selectPageCount);
   const pizzas = pizzaJson
@@ -44,20 +47,47 @@ function Home() {
     .map((item, ind) => <PizzaBlock {...item} key={ind} />);
   const skeleton = [...new Array(4)].map((_, index) => <Sceleton key={index} />);
   const url = 'https://62eaca76ad29546325946cf8.mockapi.io/items';
-  const fetchPizza = () => {
-    setIsLoading(true);
+  const fetchPizza = async () => {
+    // setIsLoading(true);
     const category = categoryId > 0 ? `&category=${categoryId}` : '';
     const sortBy = sort.sortProperty.replace('-', '');
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    axios
-      .get(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
-      .then((response) => {
-        setPizzaJson(response.data);
-        setIsLoading(false);
-      });
-    setIsLoading(false);
+    // await
+    // axios
+    //   .get(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
+    //   .then((response) => {
+    //     setPizzaJson(response.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     setPizzaJson([]);
+    //   });
+    // setIsLoading(false);
+
+    // try {
+    // const { data } = await axios.get(
+    //   `${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`,
+    // );
+    dispatch(
+      fetchPizzas({
+        url,
+        category,
+        sortBy,
+        order,
+        search,
+        currentPage,
+      }),
+    );
+    //   // setPizzaJson(res.data);
+    // } catch (error) {
+    //   console.log(error);
+    //   // setPizzaJson([]);
+    //   alert('по вашему запросу ничего не найдено');
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
   //отвечает за парсинг тех параметроав что фильтруем и вшиваем их в адресную строку
   //при первом рендеринге
@@ -72,6 +102,15 @@ function Home() {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
+  }, [categoryId, sort, searchValue, currentPage]);
+
+  //если был певый рендер, то запрвашиваем  рендер пиццы
+  useEffect(() => {
+    if (!isSearch.current) {
+      fetchPizza();
+    }
+    isSearch.current = false;
+    window.scrollTo(0, 0);
   }, [categoryId, sort, searchValue, currentPage]);
 
   //проверяем , есть ли в url параметры, сли был первый рендер
@@ -91,28 +130,6 @@ function Home() {
     }
   }, []);
 
-  //если был певый рендер, то запрвашиваем  рендер пиццы
-  useEffect(() => {
-    // console.log(
-    //   `${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`,
-    // );
-
-    // fetch(`${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`)
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     // console.log(data);
-    //     setPizzaJson(data);
-    //     setIsLoading(false);
-    //   });
-    if (!isSearch.current) {
-      fetchPizza();
-    }
-    isSearch.current = false;
-    window.scrollTo(0, 0);
-  }, [categoryId, sort, searchValue, currentPage]);
-
   return (
     <div className="container">
       <div className="content__top">
@@ -120,7 +137,15 @@ function Home() {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeleton : pizzas}</div>
+      {isLoading === 'error' ? (
+        <div className="content__error-info">
+          <h2>произошла ошибка</h2>
+          <p>К сожалению ге получилось найти пиццы, Попоробоуйте позже</p>
+        </div>
+      ) : (
+        <div className="content__items">{isLoading === 'loading' ? skeleton : pizzas}</div>
+      )}
+
       <Pagination />
     </div>
   );

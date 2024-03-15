@@ -6,7 +6,7 @@ import { setPageCount } from '../../redux/slices/filterSlice';
 const Pagination = () => {
   const dispatch = useDispatch();
   const onCangePage = (e) => {
-    console.log(e);
+    // console.log(e);
     dispatch(setPageCount(e.selected + 1));
   };
   return (
