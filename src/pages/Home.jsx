@@ -4,14 +4,13 @@ import Categories from '../components/Categories';
 import Sort, { list } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Pagination from '../components/Pagination';
-import { useContext } from 'react';
-import { SearchContext } from '../App';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCategory,
   selectPageCount,
+  selectSearchValue,
   selectSort,
   setFilters,
 } from '../redux/slices/filterSlice';
@@ -25,7 +24,8 @@ function Home() {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const { searchValue } = useContext(SearchContext);
+  // const { searchValue } = useContext(SearchContext);
+  const searchValue = useSelector(selectSearchValue);
   // const [categoryId, setCategoryId] = useState(0);
   const categoryId = useSelector(selectCategory);
   const sort = useSelector(selectSort);
