@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 function FullPizza() {
   const { id } = useParams();
-  //   console.log(id);
+  const navigation = useNavigate();
   const [pizzaData, setPizzaData] = useState();
   useEffect(() => {
     async function fetchPizza() {
@@ -14,6 +14,7 @@ function FullPizza() {
         setPizzaData(data);
       } catch (error) {
         alert('ошибка при получении пиццы');
+        navigation('/');
       }
     }
 
@@ -24,14 +25,21 @@ function FullPizza() {
     return 'Загрузка.....';
   }
   return (
-    <div className="cart_fool">
-      <img src={pizzaData.imageUrl} alt="" />
-      <div className="discription">
-        <h2>{pizzaData.title} </h2>
-        <h3>Цена: {pizzaData.price} p </h3>
-        <p>{pizzaData.discription}</p>
+    <>
+      <div className="cart_fool">
+        <img src={pizzaData.imageUrl} alt="" />
+        <div className="discription">
+          <h2>{pizzaData.title} </h2>
+          <h3>Цена: {pizzaData.price} p </h3>
+          <p>{pizzaData.discription}</p>
+        </div>
       </div>
-    </div>
+      <div className="center">
+        <Link to="/" className="button button--black">
+          <span>Вернуться назад</span>
+        </Link>
+      </div>
+    </>
   );
 }
 export default FullPizza;

@@ -383,13 +383,14 @@ body {
 
   &_fool{
     display: flex;
-    padding: 20px;
+    padding: 50px;
     margin: 50px auto;
         
     img{
       width: 400px;
       margin-bottom: 30px;
     }
+   
     .discription{
       text-align: center;
       width: 100%;
@@ -402,10 +403,17 @@ body {
         font-size: 25px;
         margin-bottom: 30px;
       }
+      
       p{
+        
         font-size: 20px;
       }
     }
-    }
+  }
     
+}
+.center{
+   display: block;
+   width: 250px;
+  margin: 0 auto;
 }
