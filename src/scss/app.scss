@@ -379,4 +379,33 @@ body {
       font-size: 18px;
     }
   }
+
+
+  &_fool{
+    display: flex;
+    padding: 20px;
+    margin: 50px auto;
+        
+    img{
+      width: 400px;
+      margin-bottom: 30px;
+    }
+    .discription{
+      text-align: center;
+      width: 100%;
+      padding: 50px;
+      h2{
+        font-size: 50px;
+        margin-bottom: 30px;
+      }
+      h3{
+        font-size: 25px;
+        margin-bottom: 30px;
+      }
+      p{
+        font-size: 20px;
+      }
+    }
+    }
+    
 }

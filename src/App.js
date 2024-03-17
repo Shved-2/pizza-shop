@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Error404 from './pages/Error404';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import FullPizza from './pages/FullPizza';
 function App() {
   return (
     <div className="wrapper">
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/pizza/:id" element={<FullPizza />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </div>

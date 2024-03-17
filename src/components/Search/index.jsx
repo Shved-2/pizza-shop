@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import style from './Search.module.scss';
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
@@ -8,14 +8,6 @@ const Search = () => {
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const inputRef = useRef();
-
-  // const testDebounce = useCallback(
-  //   debounce(() => {
-  //     console.log('debounce in job');
-  //   }, 1000),
-  //   [],
-  // );
-
   const onFocus = () => {
     setValue('');
     dispatch(setSearchValue(''));

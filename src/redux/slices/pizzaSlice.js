@@ -22,17 +22,17 @@ export const pizzaSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state) => {
-      console.log('идет отправка');
+      // console.log('идет отправка');
       state.status = 'loading';
       state.items = [];
     });
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
-      console.log('все удачно', state);
+      // console.log('все удачно', state);
       state.items = action.payload;
       state.status = 'success';
     });
     builder.addCase(fetchPizzas.rejected, (state) => {
-      console.log('была ошибка');
+      // console.log('была ошибка');
       state.status = 'error';
       state.items = [];
     });
