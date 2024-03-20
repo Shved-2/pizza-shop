@@ -1,11 +1,20 @@
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, selectCartById } from '../../redux/slices/cartSlice';
 import { Link } from 'react-router-dom';
 
 const typeNames = ['тонкое', 'традиционноу'];
 
-function PizzaBlock({ id, imageUrl, title, types, sizes, price, category, rating }) {
+type PizzaBlockProps={
+  id:string;
+   imageUrl:string;
+   title:string; 
+   types:number[];
+   sizes:number[];
+   price:number;    
+   rating: number;
+}
+const  PizzaBlock:FunctionComponent<PizzaBlockProps>=({ id, imageUrl, title, types, sizes, price,  rating }) =>{
   const [activeType, setActiveType] = useState(0); //тип теста
   const [activeSize, setActiveSize] = useState(0); //размер пиццы
 

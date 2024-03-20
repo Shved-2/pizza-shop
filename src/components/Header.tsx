@@ -7,7 +7,7 @@ import { selectItems, selectTotalPrice } from '../redux/slices/cartSlice';
 function Header() {
   const totalPrice = useSelector(selectTotalPrice);
   const items = useSelector(selectItems);
-  const totalCount = items.reduce((summ, item) => item.count + summ, 0);
+  const totalCount = items.reduce((summ:number, item:any) => item.count + summ, 0);
   const location = useLocation(); //объект, путь  в поисковой мстроке
   // console.log(location);
 

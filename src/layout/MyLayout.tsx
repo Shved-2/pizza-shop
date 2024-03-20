@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
+import { FunctionComponent } from 'react';
 
-function MyLayout() {
+const  MyLayout:FunctionComponent =()=> {
   return (
     <div className="wrapper">
       <Header />

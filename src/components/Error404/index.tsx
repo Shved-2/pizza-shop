@@ -1,5 +1,6 @@
+import { FunctionComponent } from 'react';
 import style from './Error404.module.scss';
-function ErrorBlock() {
+const ErrorBlock:FunctionComponent=()=> {
   return (
     <div className={style.root}>
       <div>

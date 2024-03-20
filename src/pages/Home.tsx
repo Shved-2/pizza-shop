@@ -4,7 +4,7 @@ import Categories from '../components/Categories';
 import Sort, { list } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
-import { useEffect, useRef } from 'react';
+import { FunctionComponent, useEffect, useRef } from 'react';
 import Pagination from '../components/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,7 +18,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { selectPizza, fetchPizzas, selectStatus } from '../redux/slices/pizzaSlice';
 
-function Home() {
+const Home:FunctionComponent=()=> {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = useRef(false);
@@ -44,7 +44,7 @@ function Home() {
     //   }
     //   return false;
     // })
-    .map((item, ind) => <PizzaBlock {...item} key={ind} />);
+    .map((item:any, ind:number) => <PizzaBlock {...item} key={ind} />);
   const skeleton = [...new Array(4)].map((_, index) => <Sceleton key={index} />);
   const url = 'https://62eaca76ad29546325946cf8.mockapi.io/items';
   const fetchPizza = async () => {
@@ -71,6 +71,7 @@ function Home() {
     //   `${url}?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`,
     // );
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         url,
         category,

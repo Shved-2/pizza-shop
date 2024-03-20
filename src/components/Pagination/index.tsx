@@ -1,11 +1,12 @@
+import React from 'react';
 import ReactPaginate from 'react-paginate';
 import style from './Pagination.module.scss';
 import { useDispatch } from 'react-redux';
 import { setPageCount } from '../../redux/slices/filterSlice';
 
-const Pagination = () => {
+const Pagination: React.FunctionComponent = () => {
   const dispatch = useDispatch();
-  const onCangePage = (e) => {
+  const onCangePage = (e:any) => {
     // console.log(e);
     dispatch(setPageCount(e.selected + 1));
   };

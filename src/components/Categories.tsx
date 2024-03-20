@@ -1,13 +1,14 @@
 // import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCategory, setCategoryId } from '../redux/slices/filterSlice';
+import { FunctionComponent } from 'react';
 
 const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
-function Categories() {
-  const value = useSelector(selectCategory);
+const  Categories:FunctionComponent=()=> {
+  const value:number = useSelector(selectCategory);
   const dispatch = useDispatch();
-  const onClickCategory = (i) => {
+  const onClickCategory = (i:number) => {
     dispatch(setCategoryId(i));
   };
   return (

@@ -1,7 +1,20 @@
 import { useDispatch } from 'react-redux';
 import { addItem, removeItem, minusItem } from '../redux/slices/cartSlice';
+import { FunctionComponent } from 'react';
 
-function CartItem({ id, title, count, price, types, size, imageUrl }) {
+
+
+
+type CartItemProps={
+   id:string;
+   title:string;
+   count:number;
+   price:number; 
+   types:string;
+   size:number;
+   imageUrl:string;
+}
+const CartItem:FunctionComponent<CartItemProps> =({ id, title, count, price, types, size, imageUrl })=> {
   const dispatch = useDispatch();
 
   const plusGood = () => {
