@@ -1,0 +1,87 @@
+// {
+//     "compilerOptions": {
+//       "target": "es5", 
+//     //   Specify ECMAScript target version
+//       "lib": [
+//         "dom",
+//         "dom.iterable",
+//         "esnext"
+//       ], // List of library files to be included in the compilation
+//       "allowJs": true, // Allow JavaScript files to be compiled
+//       "skipLibCheck": true, // Skip type checking of all declaration files
+//       "esModuleInterop": true, // Disables namespace imports (import * as fs from "fs") and enables CJS/AMD/UMD style imports (import fs from "fs")
+//       "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+//       "strict": false, // Enable all strict type checking options
+//       "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file.
+//       "module": "esnext", // Specify module code generation
+//       "moduleResolution": "node", // Resolve modules using Node.js style
+//       "isolatedModules": true, // Unconditionally emit imports for unresolved files
+//       "resolveJsonModule": true, // Include modules imported with .json extension
+//       "noEmit": true, // Do not emit output (meaning do not compile code, only perform type checking)
+//       "jsx": "react", // Support JSX in .tsx files
+//       "sourceMap": true, // Generate corrresponding .map file
+//       "declaration": true, // Generate corresponding .d.ts file
+//       "noUnusedLocals": true, // Report errors on unused locals
+//       "noUnusedParameters": true, // Report errors on unused parameters
+//       "incremental": true, // Enable incremental compilation by reading/writing information from prior compilations to a file on disk
+//       "noFallthroughCasesInSwitch": true // Report errors for fallthrough cases in switch statement
+//     },
+//     "include": [
+//       "src/**/*" // *** The files TypeScript should type check ***
+//     ],
+//     "exclude": ["node_modules", "build"] // *** The files to not type check ***
+//   }
+
+
+
+// {
+//   "compilerOptions": {
+//     "outDir": "build/dist",
+//     "module": "commonjs",
+//     "target": "es5",
+//     "lib": ["es6", "dom"],
+//     "sourceMap": true,
+//     "allowJs": true,
+//     "jsx": "react",
+//     "moduleResolution": "node",
+//     "rootDir": "src",
+//     "noImplicitReturns": true,
+//     "noImplicitThis": true,
+//     "noImplicitAny": true,
+//     "strictNullChecks": true
+//   },
+//   "exclude": [
+//     "node_modules",
+//     "build",
+//     "scripts",
+//     "acceptance-tests",
+//     "webpack",
+//     "jest",
+//     "src/setupTests.ts"
+//   ],
+//   "types": [
+//     "typePatches"
+//   ]
+// }
+
+
+{
+  "compilerOptions": {
+    "target": "es5",    //Указываем целевую версию ECMAScript
+    "lib": ["dom", "dom.iterable", "esnext"],// Список файлов библиотеки, которые будут включены в компиляцию
+    "allowJs": true,// Разрешить компиляцию файлов JavaScript
+    "skipLibCheck": true,// Пропустить проверку типов всех файлов объявлений
+    "esModuleInterop": true,// Отключает импорт пространства имен (импорт * как fs из «fs») и включает импорт в стиле CJS/AMD/UMD (импортирует fs из «fs»)
+    "allowSyntheticDefaultImports": true,// Разрешить импорт по умолчанию из модулей без экспорта по умолчанию
+    "strict": true,// Включаем все параметры строгой проверки типов
+    "forceConsistentCasingInFileNames": true,// Запретить ссылки на один и тот же файл с непоследовательным регистром.
+    "noFallthroughCasesInSwitch": true,// Сообщаем об ошибках в случае провала в операторе переключения
+    "module": "esnext",// Указываем генерацию кода модуля
+    "moduleResolution": "node",// Разрешаем модули, используя стиль Node.js
+    "resolveJsonModule": true,// Включаем модули, импортированные с расширением .json
+    "isolatedModules": true,// Безоговорочно выдаем импорт для неразрешенных файлов
+    "noEmit": true,// Не выдавать вывод (то есть не компилировать код, а выполнять только проверку типов)
+    "jsx": "react-jsx"// Поддержка JSX в файлах .tsx
+  },
+  "include": ["src"]
+}

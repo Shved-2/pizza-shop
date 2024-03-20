@@ -1,11 +1,19 @@
+
 import axios from 'axios';
-import { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-function FullPizza() {
+
+const  FullPizza:FunctionComponent=()=>{
   const { id } = useParams();
-  const navigation = useNavigate();
-  const [pizzaData, setPizzaData] = useState();
+  const navigation = useNavigate();//прокидывт в url строку данные
+ 
+  const [pizzaData, setPizzaData] = useState<{
+    imageUrl: string,
+    title: string,
+    price: number,
+    discription: string
+  }>();
   useEffect(() => {
     async function fetchPizza() {
       try {
@@ -17,13 +25,14 @@ function FullPizza() {
         navigation('/');
       }
     }
-
     fetchPizza();
   }, []);
 
+ 
   if (!pizzaData) {
-    return 'Загрузка.....';
+    return <>'Загрузка.....'</>;
   }
+
   return (
     <>
       <div className="cart_fool">
